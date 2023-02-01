@@ -3,21 +3,21 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet } from 'react-native';
 import React from 'react';
 import  { useState } from "react";
-import {  Image, Dimensions, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {  Image, Dimensions, Text, TextInput, TouchableOpacity, View, Button} from 'react-native';
 import { Link, NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "react-native";
-
+import { useNavigation } from '@react-navigation/native';
 const top = require("../../assets/authentication.png");
 const emailIcon = require("../../assets/emailIcon.png");
 const passwordIcon = require("../../assets/passwordIcon.png");
 const width= Dimensions.get('screen').width;
 const Stack = createStackNavigator();
+
 export default function Authentication({}) {
+  const navigation = useNavigation();
   const [email, setEmail] = useState("");
   return <>
   <View style={styles.global}>  
-  <NavigationContainer>
-    <Stack.Navigator>
     <Image source ={top} style ={styles.top} /> 
     <Text style={styles.title}>Bem vindo a PEX!</Text>
     <Text style={styles.subtitle}>Informe os seus dados para ter acessoa um mundo de economia para sua obra</Text>
@@ -29,17 +29,18 @@ export default function Authentication({}) {
             <Image style={styles.icon} source={passwordIcon}/>
             <TextInput placeholder='Senha' secureTextEntry ={true} style={styles.passwordInput}></TextInput>
         </View>
-        <Stack.Screen name="Home" component={Home} />
-        <Link to="/forgotPassword" style={styles.forgotPassword}>Esqueci minha senha</Link>
-        <TouchableOpacity>
-            <Link to="/login" style={styles.logInLink}>Acessar.</Link>
+        <TouchableOpacity onPress={() => navigation.navigate('PasswordRecovery')}>
+            <Text>Esqueceu sua senha?</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Main')}>
+            <Text>Acessar</Text>
         </TouchableOpacity>
         <View style={styles.createAccountSection}>
           <Text style={styles.naoPoussuiConta}>Não possui uma conta? </Text>
-          <Link to ={"/createAccount"} style={styles.textButtonCriarConta}>Criar conta</Link>
+          <TouchableOpacity style={styles.textButtonCriarConta} onPress={() => navigation.navigate('CreateAccount')}>
+            <Text>Criar conta</Text>
+          </TouchableOpacity>
       </View>
-     </Stack.Navigator>
-    </NavigationContainer>
   </View>
   </>
 }
